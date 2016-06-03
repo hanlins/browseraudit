@@ -1,7 +1,8 @@
 package main
 
 import (
-	"code.google.com/p/gcfg"
+	//"gopkg.in/gcfg.v1"
+	"github.com/scalingdata/gcfg"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"

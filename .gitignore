@@ -24,7 +24,7 @@ _testmain.go
 *.swp
 
 # Production configuration file for the BrowserAudit Go server
-/server.cfg
+#/server.cfg
 
 # The GeoLite2 and GeoIP2 databases, used by the BrowserAudit Go server for
 # geolocation based on users' IP addresses
