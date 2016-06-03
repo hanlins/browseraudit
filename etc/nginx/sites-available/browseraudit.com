@@ -5,9 +5,9 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
 ssl_prefer_server_ciphers on;
 
-ssl_stapling on;
-ssl_stapling_verify on;
-ssl_trusted_certificate /srv/ssl/chain.crt;
+#ssl_stapling on;
+#ssl_stapling_verify on;
+#ssl_trusted_certificate /srv/ssl/chain.crt;
 
 server {
 	listen 80;
@@ -30,7 +30,8 @@ server {
 	}
 
 	location = /robots.txt {
-		alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		#alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		alias /root/ba_proj/browseraudit/robots.txt;
 	}
 
 	location ~ ^/([sg]et_(request|session)_secure_cookie|set_protocol) {
@@ -55,8 +56,10 @@ server {
 	server_name browseraudit.com;
 
 	ssl on;
-	ssl_certificate /srv/ssl/browseraudit.com.crt;
-	ssl_certificate_key /srv/ssl/browseraudit.com.ecc.key;
+	#ssl_certificate /srv/ssl/browseraudit.com.crt;
+	#ssl_certificate_key /srv/ssl/browseraudit.com.ecc.key;
+	ssl_certificate /etc/nginx/ssl/server.crt;
+	ssl_certificate_key /etc/nginx/ssl/server.key;
 
 	location / {
 		proxy_pass http://127.0.0.1:8080;
@@ -88,11 +91,13 @@ server {
 	}
 
 	location = /robots.txt {
-		alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		#alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		alias /root/ba_proj/browseraudit/robots.txt;
 	}
 
 	location /static/ {
-		alias /home/go/go/src/github.com/browseraudit/browseraudit/static/;
+		#alias /home/go/go/src/github.com/browseraudit/browseraudit/static/;
+		alias /root/ba_proj/browseraudit/static/;
 	}
 
 	location @homepage {
@@ -111,7 +116,8 @@ server {
 	}
 
 	location = /robots.txt {
-		alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		#alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		alias /root/ba_proj/browseraudit/robots.txt;
 	}
 
 	location ~ ^/(csp|sop|frameoptions|set_protocol) {
@@ -134,8 +140,10 @@ server {
 	server_name test.browseraudit.com;
 
 	ssl on;
-	ssl_certificate /srv/ssl/browseraudit.com.crt;
-	ssl_certificate_key /srv/ssl/browseraudit.com.ecc.key;
+	#ssl_certificate /srv/ssl/browseraudit.com.crt;
+	#ssl_certificate_key /srv/ssl/browseraudit.com.ecc.key;
+	ssl_certificate /etc/nginx/ssl/server.crt;
+	ssl_certificate_key /etc/nginx/ssl/server.key;
 
 	location / {
 		rewrite  .*  https://browseraudit.com/ permanent;
@@ -159,7 +167,8 @@ server {
 	}
 
 	location = /robots.txt {
-		alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		#alias /home/go/go/src/github.com/browseraudit/browseraudit/robots.txt;
+		alias /root/ba_proj/browseraudit/robots.txt;
 	}
 
 	location ~ ^/(csp|sop|frameoptions|cors|set_protocol) {
@@ -171,7 +180,8 @@ server {
 	}
 
 	location /static/ {
-		alias /home/go/go/src/github.com/browseraudit/browseraudit/static/;
+		#alias /home/go/go/src/github.com/browseraudit/browseraudit/static/;
+		alias /root/ba_proj/browseraudit/static/;
 	}
 
 	location @homepage {
@@ -197,8 +207,10 @@ server {
 	server_name browseraudit.org test.browseraudit.org;
 
 	ssl on;
-	ssl_certificate /srv/ssl/browseraudit.org.crt;
-	ssl_certificate_key /srv/ssl/browseraudit.org.ecc.key;
+	#ssl_certificate /srv/ssl/browseraudit.com.crt;
+	#ssl_certificate_key /srv/ssl/browseraudit.com.ecc.key;
+	ssl_certificate /etc/nginx/ssl/server.crt;
+	ssl_certificate_key /etc/nginx/ssl/server.key;
 
 	location / {
 		rewrite  .*  https://browseraudit.com/ permanent;
@@ -221,7 +233,8 @@ server {
 	}
 
 	location /static/ {
-		alias /home/go/go/src/github.com/browseraudit/browseraudit/static/;
+		#alias /home/go/go/src/github.com/browseraudit/browseraudit/static/;
+		alias /root/ba_proj/browseraudit/static/;
 	}
 
 	location @homepage {
