@@ -901,7 +901,7 @@ var interplay_1= function(testID, defence) {
     // not important iframe settings
     if1.height = 0; if1.width = 0; //if1.id='if0';
     // do the request after loading iframe
-    if1.onload = function() {
+    setTimeout(function() {
       $.get("/register/result/"+testID, function(result) {
         if (result === "pass") {
           thisTest.PASS("msg is blocked");
@@ -909,7 +909,8 @@ var interplay_1= function(testID, defence) {
           thisTest.WARNING("msg is not blocked");
         }
       });
-    };
+    }, 500);
+
     s1.style.display='none';
     s1.appendChild(if1);// append bridge
 
