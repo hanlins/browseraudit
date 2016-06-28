@@ -50,3 +50,11 @@ BrowserAudit is free software, licensed under the terms of the 2-clause BSD lice
 If you would like to cite BrowserAudit in your academic work, please cite our [ISSTA 2015](http://issta2015.cs.uoregon.edu/) [conference paper](http://www.doc.ic.ac.uk/~maffeis/papers/issta15.pdf):
 
 > Charlie Hothersall-Thomas, Sergio Maffeis and Chris Novakovic. **BrowserAudit: Automated Testing of Browser Security Features**. In *Proceedings of the 2015 International Symposium on Software Testing and Analysis (ISSTA 2015)*, Baltimore, MD, USA, July 12-17, 2015. ACM 2015, ISBN 978-1-4503-3620-8.
+
+
+NEW TESTS
+=========
+* 143 : DOM - Cookie interplay without defence
+* 144 : DOM - Cookie interplay with defence
+* 145 : postMessage sender origin check bypassing test without defence.
+* 146 : postMessage sender origin check bypassing test with defence.

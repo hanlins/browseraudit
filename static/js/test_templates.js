@@ -923,7 +923,7 @@ var interplay_1= function(testID, defence) {
  *  @param testID id of the test.
  *  @param return Void.
  */
-var interplay_2 = function(testID) {
+var interplay_2 = function(testID, defence) {
   document.domain='browseraudit.com';
   var test_template = function() {
     var thisTest = this;
@@ -932,7 +932,11 @@ var interplay_2 = function(testID) {
     // set default result to be fail
     $.get("/register/pass/"+testID, null);
     // source setting.
-    if1.src = 'https://sub1.browseraudit.com/static/interplay/postmsg/postmsg.html';
+    if (defence === 0) {
+      if1.src = 'https://sub1.browseraudit.com/static/interplay/postmsg/postmsg.html';
+    } else {
+      if1.src = 'https://sub1.browseraudit.com/static/interplay/postmsg/postmsg2.html';
+    }
     // not important iframe settings
     if1.height = 0; if1.width = 0; //if1.id='if0';
     // do the request after loading iframe

@@ -1,0 +1,28 @@
+<!-- DOCTYPE HTML -->
+<html>
+<head>
+  <!--meta http-equiv="Content-Security-Policy" content="script-src http://sub1.mylab.com/multi_csp_js/script1.js https://code.jquery.com/jquery-1.12.4.min.js"-->
+  <meta http-equiv="X-Frame-Options" content="deny">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1> postMessage</h1>
+  <p>In this demo, evil.html and bridge will relax their domain (so they can communicate), then bridge will send a message to victim.html and victim will have no idea that bridge has relaxed its domain.</p><br>
+  <p>If successfully laod a second-stage evil script, then alert to prompt. </p>
+  <div id='slot'></div>
+  <script type='text/javascript'>
+    document.domain='browseraudit.com';
+    // send postmsg
+    function listener(event) {
+      var origin = event.origin || event.originalEvent.origin;
+      if (origin !== "https://sub1.browseraudit.com") {
+        //alert("not bypassed");
+      } else {
+        //alert("bypassed");
+        $.get("/register/fail/415", null);
+      }
+    }
+    addEventListener("message", listener, false);
+  </script>
+</body>
+</html>
