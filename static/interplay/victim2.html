@@ -1,0 +1,18 @@
+<!-- DOCTYPE HTML -->
+<html>
+<head>
+  <meta http-equiv="X-Frame-Options" content="deny">
+</head>
+<body>
+  victim
+  <p>original cookie value: sub2=victim</p>
+  <script type='text/javascript'>
+    document.cookie='sub2=victim';// overwrite the cookie value
+    //document.domain='browseraudit.com';
+    window.parent.parent.postMessage("message", "https://browseraudit.com");
+    //window.parent.parent.postMessage("message", "*");
+    //alert(window.parent.parent);
+    //alert("send");
+  </script>
+</body>
+</html>

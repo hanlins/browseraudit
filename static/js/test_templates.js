@@ -519,7 +519,7 @@ var headersExpect = function(testID, requestHeaders, allowedHeaders, shouldBeBlo
 	test_template.reportData = reportData;
 
 	return test_template;
-}
+};
 
 // Cross-Origin Resource Sharing -> Access-Control-Expose-Headers
 var exposeExpect = function(testID, responseHeader, exposedHeaders, shouldBeBlocked) {
@@ -842,3 +842,78 @@ var hstsTest = function(testID, hstsPolicy, headerOrigin, testOrigin, expectedPr
 	return test_template;
 };
 
+var newTestTemplate_1 = function(testID) {
+  var test_template = function() {
+    var thisTest = this;
+    // Notice we are using https instead of http, set_referer should not be blocked by browser
+    $("<img>", { src: "https://browseraudit.com/set_referer" }).load(function() {
+      $.get("/get_referer", function(referer) {
+        if (referer === "") {
+          thisTest.WARNING("The Referer header was not sent in the request.");
+        } else {
+          thisTest.PASS("The Referer header was sent in the request" + referer + ".");
+        }
+      });
+    });
+  };
+  test_template.reportData = {};
+  return test_template;
+};
+
+/** interplay between cookie and dom object */
+/*
+var interplayCookieDOM_1 = function(testID) {
+	var test_template = function() {
+	}
+}*/
+
+/** helper function.
+ *  @param name name of the cookie.
+ *  @param d document (from child).
+ *  @return cookie value.
+ */
+function getCookie(name, d) {
+    var value = "; " + d.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
+/** Interplay test.
+ *  @param testID id of the test.
+ *  @param defence 0 if no defence is applied
+ *                 otherwise corresponding defence machanism will be applied.
+ *  @param return Void.
+ */
+var interplay_1= function(testID, defence) {
+  document.domain='browseraudit.com';
+  var test_template = function() {
+    var thisTest = this;
+    var s1 = document.getElementById("sandbox");
+    var if1 = document.createElement("iframe");
+    // set default result to be fail
+    $.get("/register/pass/"+testID, null);
+    // source setting.
+    if (defence === 0) {
+      if1.src = 'https://browseraudit.com/static/interplay/evil.html';
+    } else {
+      if1.src = 'https://browseraudit.com/static/interplay/evil2.html';
+    }
+    // not important iframe settings
+    if1.height = 0; if1.width = 0; //if1.id='if0';
+    // do the request after loading iframe
+    if1.onload = function() {
+      $.get("/register/result/"+testID, function(result) {
+        if (result === "pass") {
+          thisTest.PASS("msg is blocked");
+        } else {
+          thisTest.WARNING("msg is not blocked");
+        }
+      });
+    };
+    s1.style.display='none';
+    s1.appendChild(if1);// append bridge
+
+  };
+  test_template.reportData = {};
+  return test_template;
+};

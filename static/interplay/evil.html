@@ -1,0 +1,54 @@
+<!-- DOCTYPE HTML -->
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1> Interplay: cookie + dom access </h1>
+<p> domain = mylab.com </p>
+<div id='slot1'>slot1</div>
+<div id='slot2'>slot2</div>
+<p>answer of cookie value:</p><br>
+<div id='ans'></div>
+  <script type='text/javascript'>
+    /** helper function.
+     *  @param name name of the cookie.
+     *  @param d document
+     *  @return cookie value.
+     */
+    function getCookie(name, d) {
+        var value = "; " + d.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+    function listener (event) {
+      //alert("get it!");
+      var d=(if1.contentWindow || if1.contentDocument);
+      if (d.document) { d=d.document;}
+      //document.getElementById('ans').innerHTML += getCookie('sub2', d);
+      var cookieval = getCookie('sub2', d);
+      //alert(cookieval);
+      if (cookieval === 'victim') {
+        $.get("/register/fail/413", null);
+      }
+    }
+
+    document.domain='browseraudit.com';
+    var s1 = document.getElementById("slot1");
+    var if1 = document.createElement("iframe");
+    if1.src = 'https://sub2.browseraudit.com/static/interplay/bridge.html';
+    if1.height = 400;
+    if1.width = 400;
+    if1.id='if1';
+    //s1.style.display='none';
+    s1.appendChild(if1);// append bridge
+    $.get("/register/fail/413", null);
+    if (window.addEventListener){
+      addEventListener("message", listener, false);
+    } else {
+      attachEvent("onmessage", listener);
+    }
+  </script>
+</body>
+</html>

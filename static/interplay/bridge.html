@@ -1,0 +1,21 @@
+<!-- DOCTYPE HTML -->
+<html>
+<head></head>
+<body>
+  bridge
+  <p>overwritten cookie value: sub2=bridge</p>
+  <script type='text/javascript'>
+    document.cookie='sub2=bridge';// set cookie and should be overwritten by victim
+    /** if 'bridge.html' doesn't relax document.domain property, then 'evil.html' cannot steal cookie. */
+    document.domain='browseraudit.com';// relax domain to mylab.com
+    var s2=window.parent.document.getElementById("slot2");// slot2 is in parent page
+    var if2 = document.createElement("iframe");
+    if2.src = 'https://sub2.browseraudit.com/static/interplay/victim.html';
+    if2.height = 400;
+    if2.width = 400;
+    if2.id='if2';
+    //s2.style.display='none';
+    s2.appendChild(if2);// append victim
+  </script>
+</body>
+</html>

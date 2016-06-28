@@ -32,3 +32,6 @@ _testmain.go
 /GeoLite2-City.mmdb
 /GeoIP2-Country.mmdb
 /GeoIP2-City.mmdb
+error.log
+
+browseraudit

@@ -1,0 +1,41 @@
+<!-- DOCTYPE HTML -->
+<html>
+<head></head>
+<body>
+<h1> Interplay: cookie + dom access </h1>
+<p> domain = mylab.com </p>
+<div id='slot1'>slot1</div>
+<div id='slot2'>slot2</div>
+<p>answer of cookie value:</p><br>
+<div id='ans'></div>
+  <script type='text/javascript'>
+
+    document.domain='browseraudit.com';
+    var s1 = document.getElementById("slot1");
+    var if1 = document.createElement("iframe");
+    if1.src = 'https://sub2.browseraudit.com/static/interplay/bridge.html';
+    if1.height = 400;
+    if1.width = 400;
+    if1.id='if1';
+    //s1.style.display='none';
+    /*
+    setTimeout(function() {
+      d=(if1.contentWindow || if1.contentDocument);
+      if (d.document) { d=d.document;}
+      //alert(d.cookie);
+      //document.getElementById('ans').innerHTML += d.cookie;
+      document.getElementById('ans').innerHTML = getCookie('sub2', d);
+      }, 20);
+    */
+    if1.onload=function() {
+      d=(if1.contentWindow || if1.contentDocument);
+      if (d.document) { d=d.document;}
+      //alert(d.cookie);
+      //document.getElementById('ans').innerHTML += d.cookie;
+      document.getElementById('ans').innerHTML = getCookie('sub2', d);
+      };
+    s1.appendChild(if1);// append bridge
+
+  </script>
+</body>
+</html>

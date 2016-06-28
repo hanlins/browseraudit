@@ -2,12 +2,12 @@ package main
 
 import (
 	//"gopkg.in/gcfg.v1"
-	"github.com/scalingdata/gcfg"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/oschwald/geoip2-golang"
+	"github.com/scalingdata/gcfg"
 	"log"
 	"net/http"
 	"strings"
@@ -16,9 +16,9 @@ import (
 // Structure of server.cfg (INI file):
 type Config struct {
 	HTTPServer struct {
-		Host string
-		Port int
-		SessionIDSalt string
+		Host           string
+		Port           int
+		SessionIDSalt  string
 		GeoIP2Database string
 	}
 	Memcached struct {
@@ -26,10 +26,10 @@ type Config struct {
 		Port int
 	}
 	Database struct {
-		Host string
-		Port int
-		Username string
-		Password string
+		Host         string
+		Port         int
+		Username     string
+		Password     string
 		DatabaseName string `gcfg:"dbname"`
 	}
 }
@@ -41,7 +41,7 @@ var geoipDB *geoip2.Reader
 
 func main() {
 	var err error // This allows us to use the global vars geoipDB and db with :=
-	
+
 	// Read configuration file
 	if err := gcfg.ReadFileInto(&cfg, "server.cfg"); err != nil {
 		log.Fatalf("Could not read server configuration file 'server.cfg': %s\n", err)
@@ -117,13 +117,23 @@ func main() {
 
 	r.HandleFunc("/redirect/{dest}", RedirectHandler)
 
+	// interplay tests
+	//r.HandleFunc("/inter_evil", InterEvilHandler)
+	//r.HandleFunc("/inter_bridge", InterBridgeHandler)
+	//r.HandleFunc("/inter_victim", InterVictimHandler)
+	//r.HandleFunc("/register/set/{id:[0-9]+}/{val:[a-z]+}", InterSetHandler)
+	//r.HandleFunc("/register/get/{id:[0-9]+}", InterGetHandler)
+	r.HandleFunc("/register/pass/{id:[0-9]+}", RegisterPassHandler)
+	r.HandleFunc("/register/fail/{id:[0-9]+}", RegisterFailHandler)
+	r.HandleFunc("/register/result/{id:[0-9]+}", RegisterResultHandler)
+
 	// Connect to the database server
 	var dbDataSource = fmt.Sprintf("host=%s port=%d user='%s' password='%s' dbname='%s'",
 		cfg.Database.Host,
 		cfg.Database.Port,
 		strings.Replace(cfg.Database.Username, "'", "\\'", -1),
 		strings.Replace(cfg.Database.Password, "'", "\\'", -1),
-		strings.Replace(cfg.Database.DatabaseName, "'", "\\'", -1))	
+		strings.Replace(cfg.Database.DatabaseName, "'", "\\'", -1))
 	if db, err = sqlx.Connect("postgres", dbDataSource); err != nil {
 		log.Fatalf("Could not connect to database server: %s\n", err)
 	}
@@ -155,4 +165,3 @@ func TestHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.ServeFile(w, r, "./test.html")
 }
-
