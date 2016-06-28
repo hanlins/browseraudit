@@ -878,7 +878,7 @@ function getCookie(name, d) {
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
-/** Interplay test.
+/** Interplay test 1, test DOM - Cookie interplay.
  *  @param testID id of the test.
  *  @param defence 0 if no defence is applied
  *                 otherwise corresponding defence machanism will be applied.
@@ -914,6 +914,40 @@ var interplay_1= function(testID, defence) {
     s1.style.display='none';
     s1.appendChild(if1);// append bridge
 
+  };
+  test_template.reportData = {};
+  return test_template;
+};
+
+/** Interplay test 2, test cross-domain postMessage domain masqurade.
+ *  @param testID id of the test.
+ *  @param return Void.
+ */
+var interplay_2 = function(testID) {
+  document.domain='browseraudit.com';
+  var test_template = function() {
+    var thisTest = this;
+    var s1 = document.getElementById("sandbox");
+    var if1 = document.createElement("iframe");
+    // set default result to be fail
+    $.get("/register/pass/"+testID, null);
+    // source setting.
+    if1.src = 'https://sub1.browseraudit.com/static/interplay/postmsg/postmsg.html';
+    // not important iframe settings
+    if1.height = 0; if1.width = 0; //if1.id='if0';
+    // do the request after loading iframe
+    setTimeout(function() {
+      $.get("/register/result/"+testID, function(result) {
+        if (result === "pass") {
+          thisTest.PASS("msg is blocked");
+        } else {
+          thisTest.WARNING("msg is not blocked");
+        }
+      });
+    }, 500);
+
+    s1.style.display='none';
+    s1.appendChild(if1);// append bridge
   };
   test_template.reportData = {};
   return test_template;

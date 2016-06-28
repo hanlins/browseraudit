@@ -1,0 +1,30 @@
+<!-- DOCTYPE HTML -->
+<html>
+<head>
+  <!--meta http-equiv="Content-Security-Policy" content="script-src http://sub1.mylab.com/multi_csp_js/script1.js https://code.jquery.com/jquery-1.12.4.min.js"-->
+  <!--script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script-->
+</head>
+<body>
+  <h1> postMessage</h1>
+  <p>In this demo, evil.html and bridge will relax their domain (so they can communicate), then bridge will send a message to victim.html and victim will have no idea that bridge has relaxed its domain.</p><br>
+  <p>If successfully laod a second-stage evil script, then alert to prompt. </p>
+  <div id='slot1'></div>
+  <script type='text/javascript'>
+    document.domain='browseraudit.com';
+    var s1 = document.getElementById("slot1");
+    var if1 = document.createElement("iframe");
+    if1.src = 'https://sub2.browseraudit.com/static/interplay/postmsg/victim.html';
+//    if1.src = 'http://sub2.mylab.com/postmsg/victim.html';
+    if1.height = 400;
+    if1.width = 400;
+    if1.id='if1';
+    //s1.style.display='none';
+    s1.appendChild(if1);// append bridge
+    if1.onload=function() {
+      var win = (if1.contentWindow || if1.contentDocument);
+      //win.postMessage("message", "http://sub2.mylab.com");
+      win.postMessage("message", "*");
+    };
+  </script>
+</body>
+</html>
