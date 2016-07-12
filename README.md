@@ -58,3 +58,5 @@ NEW TESTS
 * 144 : DOM - Cookie interplay with defence
 * 145 : postMessage sender origin check bypassing test without defence.
 * 146 : postMessage sender origin check bypassing test with defence.
+* 147 : block setting third-party cookie via response header
+* 148 : block setting third-party cookie via js

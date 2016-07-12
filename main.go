@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // Structure of server.cfg (INI file):
@@ -127,6 +128,8 @@ func main() {
 	r.HandleFunc("/register/fail/{id:[0-9]+}", RegisterFailHandler)
 	r.HandleFunc("/register/result/{id:[0-9]+}", RegisterResultHandler)
 
+	r.HandleFunc("/setthirdparty}", SetThirdPartyCookieHeaderHandler)
+
 	// Connect to the database server
 	var dbDataSource = fmt.Sprintf("host=%s port=%d user='%s' password='%s' dbname='%s'",
 		cfg.Database.Host,
@@ -164,4 +167,14 @@ func TestHandler(w http.ResponseWriter, r *http.Request) {
 	store.New(w, r)
 
 	http.ServeFile(w, r, "./test.html")
+}
+
+func SetThirdPartyCookieHeaderHandler(w http.ResponseWriter, r *http.Request) {
+	cookie := &http.Cookie{
+		Name:    "setcookie",
+		Value:   "42",
+		Expires: time.Now().Add(24 * time.Hour),
+	}
+	http.SetCookie(w, cookie)
+	http.ServeFile(w, r, "./static/thirdparty/setcookie.html")
 }

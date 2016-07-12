@@ -956,3 +956,73 @@ var interplay_2 = function(testID, defence) {
   test_template.reportData = {};
   return test_template;
 };
+
+/** Third-party cookie blocking.
+ *  @brief User visit the base page at 'https://browseraudit.com/static/thirdparty/headerBase.html',
+ *         then load iframe from 'https://sub2.browseraudit.com/setthirdparty/setcookie.html'
+ *         then go to 'https://sub2.browseraudit.com/staitc/thirdparty/getcookie.html' to check whether cookie is set.
+ */
+var third_party_header = function(testID) {
+  document.domain='browseraudit.com';
+  var test_template = function() {
+    var thisTest = this;
+    var s1 = document.getElementById("sandbox");
+    var if1 = document.createElement("iframe");
+    // set default result to be fail
+    $.get("/register/pass/"+testID, null);
+    // source setting.
+    if1.src = 'https://browseraudit.com/static/thirdparty/headerBase.html';
+    // not important iframe settings
+    if1.height = 0; if1.width = 0; //if1.id='if0';
+    // do the request after loading iframe
+    setTimeout(function() {
+      $.get("/register/result/"+testID, function(result) {
+        if (result === "pass") {
+          thisTest.PASS("cookie is not set");
+        } else {
+          thisTest.WARNING("cookie is set");
+        }
+      });
+    }, 500);
+
+    s1.style.display='none';
+    s1.appendChild(if1);// append bridge
+  };
+  test_template.reportData = {};
+  return test_template;
+};
+
+/** Third-party cookie blocking.
+ *  @brief User visit the base page at 'https://browseraudit.com/static/thirdparty/headerBase.html',
+ *         then load iframe from 'https://sub2.browseraudit.com/setthirdparty/setcookie.html'
+ *         then go to 'https://sub2.browseraudit.com/staitc/thirdparty/getcookie.html' to check whether cookie is set.
+ */
+var third_party_js = function(testID) {
+  document.domain='browseraudit.com';
+  var test_template = function() {
+    var thisTest = this;
+    var s1 = document.getElementById("sandbox");
+    var if1 = document.createElement("iframe");
+    // set default result to be fail
+    $.get("/register/pass/"+testID, null);
+    // source setting.
+    if1.src = 'https://browseraudit.com/static/thirdparty/jsBase.html';
+    // not important iframe settings
+    if1.height = 0; if1.width = 0; //if1.id='if0';
+    // do the request after loading iframe
+    setTimeout(function() {
+      $.get("/register/result/"+testID, function(result) {
+        if (result === "pass") {
+          thisTest.PASS("cookie is not set");
+        } else {
+          thisTest.WARNING("cookie is set");
+        }
+      });
+    }, 500);
+
+    s1.style.display='none';
+    s1.appendChild(if1);// append bridge
+  };
+  test_template.reportData = {};
+  return test_template;
+};

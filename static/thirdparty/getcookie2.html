@@ -1,0 +1,31 @@
+<!DOCTYPE>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script>
+    /** helper function.
+     *  @param name name of the cookie.
+     *  @param d document
+     *  @return cookie value.
+     */
+    function getCookie(name, d) {
+        var value = "; " + d.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+    var cookieval = getCookie('setcookie', document);
+    if (cookieval == null || cookieval === "") {
+      console.log("pass");
+    } else {
+      // test number = 418
+      console.log("fail");
+      $.get("/register/fail/418", null);
+      console.log(cookieval);
+    }
+    document.cookie = "setcookie" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'; // delete cookie
+  </script>
+</body>
+</html>
